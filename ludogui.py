@@ -137,8 +137,12 @@ a_r_sqr.create_text(40, 20, text="D", fill="green", font=('Helvetica 15 bold'))
 a_r_sqr.create_text(40, 40, text="Home", font=('Helvetica 12'))
 
 # Dice
-list1 = [1, 2, 3, 4, 5, 6]
-dice = Label(text = random.choice(list1), font=('Helvetica 15 bold')) .grid(row=7, column=15)
+def dice_click():
+    list1 = [1, 2, 3, 4, 5, 6]
+    Label(text = random.choice(list1), font=('Helvetica 15 bold')) .grid(row=7, column=15)
+
+dice_button = Button(root, text="Roll", command=dice_click) .grid(row=8, column=15)
+
 
 orange_p = Label(text="P", bg="orange") .grid(row=0, column=14)
 
