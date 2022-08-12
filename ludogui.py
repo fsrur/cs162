@@ -1,3 +1,4 @@
+import random
 from tkinter import *
 
 root = Tk()
@@ -102,9 +103,45 @@ a_h_sqr.create_text(40, 40, text="Ready", font=('Helvetica 12'))
 
 a_r_sqr = Canvas(root, width=81, height=81, highlightthickness=1, highlightbackground="black")
 a_r_sqr.grid(row=3, column=3, rowspan=2, columnspan=2)
-a_r_sqr.create_text(40, 20, text="A", font=('Helvetica 15 bold'))
+a_r_sqr.create_text(40, 20, text="A", fill="orange", font=('Helvetica 15 bold'))
 a_r_sqr.create_text(40, 40, text="Home", font=('Helvetica 12'))
-# Button(root, image = queen).pack(side = TOP)
+
+# "B" Home and Ready squares
+a_h_sqr = Canvas(root, width=82, height=82, bg="#ADD8E6", highlightthickness=1, highlightbackground="black")
+a_h_sqr.grid(row=1, column=12, rowspan=2, columnspan=2)
+a_h_sqr.create_text(40, 40, text="Ready", font=('Helvetica 12'))
+
+a_r_sqr = Canvas(root, width=81, height=81, highlightthickness=1, highlightbackground="black")
+a_r_sqr.grid(row=3, column=10, rowspan=2, columnspan=2)
+a_r_sqr.create_text(40, 20, text="B", fill="blue", font=('Helvetica 15 bold'))
+a_r_sqr.create_text(40, 40, text="Home", font=('Helvetica 12'))
+
+# "C" Home and Ready squares
+a_h_sqr = Canvas(root, width=82, height=82, bg="#FFC0CB", highlightthickness=1, highlightbackground="black")
+a_h_sqr.grid(row=12, column=12, rowspan=2, columnspan=2)
+a_h_sqr.create_text(40, 40, text="Ready", font=('Helvetica 12'))
+
+a_r_sqr = Canvas(root, width=81, height=81, highlightthickness=1, highlightbackground="black")
+a_r_sqr.grid(row=10, column=10, rowspan=2, columnspan=2)
+a_r_sqr.create_text(40, 20, text="C", fill="pink", font=('Helvetica 15 bold'))
+a_r_sqr.create_text(40, 40, text="Home", font=('Helvetica 12'))
+
+# "D" Home and Ready squares
+a_h_sqr = Canvas(root, width=82, height=82, bg="#90ee90", highlightthickness=1, highlightbackground="black")
+a_h_sqr.grid(row=12, column=1, rowspan=2, columnspan=2)
+a_h_sqr.create_text(40, 40, text="Ready", font=('Helvetica 12'))
+
+a_r_sqr = Canvas(root, width=81, height=81, highlightthickness=1, highlightbackground="black")
+a_r_sqr.grid(row=10, column=3, rowspan=2, columnspan=2)
+a_r_sqr.create_text(40, 20, text="D", fill="green", font=('Helvetica 15 bold'))
+a_r_sqr.create_text(40, 40, text="Home", font=('Helvetica 12'))
+
+# Dice
+list1 = [1, 2, 3, 4, 5, 6]
+dice = Label(text = random.choice(list1), font=('Helvetica 15 bold')) .grid(row=7, column=15)
+
+orange_p = Label(text="P", bg="orange") .grid(row=0, column=14)
+
 
 
 
