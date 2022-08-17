@@ -172,6 +172,20 @@ class LudoGame:
         """Returns a list of Player objects playing the game"""
         return self._players_obj
 
+    def set_players(self, num_of_players):
+        player_list_2 = ['A', 'B']
+        player_list_3 = ['A', 'B', 'C']
+        player_list_4 = ['A', 'B', 'C', 'D']
+        if num_of_players == 2:
+            for i in player_list_2:
+                self._players_obj.append(Player(i))
+        elif num_of_players == 3:
+            for i in player_list_3:
+                self._players_obj.append(Player(i))
+        elif num_of_players == 4:
+            for i in player_list_4:
+                self._players_obj.append(Player(i))
+
     # Player by letter selections
     def get_player_by_position(self, player_pos):
         """Takes Player's letter selection('A', 'B', 'C, or 'D) as parameter. Returns Player object"""
@@ -196,33 +210,19 @@ class LudoGame:
         else:
             print("Error")
 
-    def players(self, num_of_players):
-        player_list_2 = ['A', 'B']
-        player_list_3 = ['A', 'B', 'C']
-        player_list_4 = ['A', 'B', 'C', 'D']
-        if num_of_players == 2:
-            # for i in player_list_2:
-            self._players_obj.append(Player('A'))
-            self._players_obj.append(Player('B'))
-        # elif num_of_players == 3:
-        #     for i in player_list_3:
-        #         self._players_obj.append(Player(i))
-        # elif num_of_players == 4:
-        #     for i in player_list_4:
-        #         self._players_obj.append(Player(i))
-
     # Moves players' P and Q according to the game rules. Uses move_token method to update token step count for each player.
-    def play_game(self, turns_list):
+    def play_game(self, turn):
         """Takes a list of letter selections (players) and a list of turns as parameters. Moves players' P and Q tokens
         according to the game rules. Uses move_token method to update token step count for each player. Returns
         a list of positions on the board, for each player's tokens"""
+        if len(self._players_obj) > 1:
+            # print(self._players_obj)
+            # Changes players' status
+            for player in self.get_players_obj():
+                player.set_player_status("PLAYING")
 
-        # Changes players' status
-        for player in self.get_players_obj():
-            player.set_player_status("PLAYING")
-
-        # -1(HOME), 0(READY), > 0(SOMEWHERE ON BOARD)
-        for turn in turns_list:
+            # -1(HOME), 0(READY), > 0(SOMEWHERE ON BOARD)
+            # for turn in turns:
             player = self.get_player_by_position(turn[0])
 
             # If both tokens count equal to 57 (E).
@@ -497,14 +497,6 @@ a_r_sqr.grid(row=10, column=3, rowspan=2, columnspan=2)
 a_r_sqr.create_text(40, 20, text="D", fill="green", font=('Helvetica 15 bold'))
 a_r_sqr.create_text(40, 40, text="Home", font=('Helvetica 12'))
 
-# Dice
-def dice_click():
-    list1 = ["\u2680", "\u2681", "\u2682", "\u2683", "\u2684", "\u2685"]
-    Label(text=random.choice(list1), font=('Helvetica 50')) .grid(row=6, column=15, rowspan=2, columnspan=2)
-
-dice_button = Button(root, text="Roll", command=dice_click) .grid(row=8, column=15)
-
-
 # Second Window
 window2 = Toplevel(root)
 window2.wm_transient(root)
@@ -515,18 +507,67 @@ e = Entry(window2, width=10)
 e.grid(row=0, column=0)
 num = None
 def number_of_players():
-    game.players(int(e.get()))
+    game.set_players((int(e.get())))
     window2.destroy()
 number_of_players_button = Button(window2, text="Please enter number of players", command=number_of_players)
 number_of_players_button.grid(row=1, column=0)
 
+# Dice
+list1 = ["\u2680", "\u2681", "\u2682", "\u2683", "\u2684", "\u2685"]
+
+rolls = []
+def dice_click():
+    rand = random.choice(list1)
+    Label(text=rand, font=('Helvetica 50')) .grid(row=6, column=15, rowspan=2, columnspan=2)
+    if rand == "\u2680":
+        rolls.append(1)
+    elif rand == "\u2681":
+        rolls.append(2)
+    elif rand == "\u2682":
+        rolls.append(3)
+    elif rand == "\u2683":
+        rolls.append(4)
+    elif rand == "\u2684":
+        rolls.append(5)
+    elif rand == "\u2685":
+        rolls.append(6)
+
+    even_odd = 0
+    if len(game.get_players_obj()) == 2:
+        rounds = []
+        if len(rounds) == 0:
+            for roll in rolls:
+                rounds.append(tuple(['A', roll]))
+                if roll == 6:
+                    rounds.append(tuple(['A', roll]))
+        elif even_odd == 0:
+            for roll in rolls:
+                rounds.append(tuple(['A', roll]))
+                if roll == 6:
+                    rounds.append(tuple(['A', roll]))
+        elif even_odd != 0:
+            for roll in rolls:
+                rounds.append(tuple(['B', roll]))
+                if roll == 6:
+                    rounds.append(tuple(['B', roll]))
+        even_odd = len(rounds) % 2
+        print(rounds)
+        print(len(rounds))
+        print(len(rounds)%2)
+        print(game.play_game(rounds[-1]))
+    else:
+        print('Not working')
+
+
+dice_button = Button(root, text="Roll", command=dice_click) .grid(row=8, column=15)
 
 # P token
 orange_p = Label(text="P", bg="orange") .grid(row=0, column=14)
 
-turns=[('B', 6),('B', 4)]
-game.play_game(turns)
-print(game.get_players_obj())
+
+
+
+# print(game.get_players_obj())
 
 # dice_1_img = ImageTk.PhotoImage(Image.open('1bbg.PNG'))
 # dice_1_label = Label(image=dice_1_img) .grid(row=7, column=15)
