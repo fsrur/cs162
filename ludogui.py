@@ -508,6 +508,18 @@ e.grid(row=0, column=0)
 num = None
 def number_of_players():
     game.set_players((int(e.get())))
+    if len(game.get_players_obj()) == 2:
+        Label(text="P", bg="orange").grid(row=4, column=3)
+        Label(text="Q", bg="orange").grid(row=4, column=4)
+        Label(text="P", bg="blue").grid(row=4, column=10)
+        Label(text="Q", bg="blue").grid(row=4, column=11)
+    if len(game.get_players_obj()) == 3:
+        Label(text="P", bg="orange").grid(row=4, column=3)
+        Label(text="Q", bg="orange").grid(row=4, column=4)
+        Label(text="P", bg="blue").grid(row=4, column=10)
+        Label(text="Q", bg="blue").grid(row=4, column=11)
+        Label(text="P", bg="green").grid(row=11, column=3)
+        Label(text="Q", bg="green").grid(row=11, column=4)
     window2.destroy()
 number_of_players_button = Button(window2, text="Please enter number of players", command=number_of_players)
 number_of_players_button.grid(row=1, column=0)
@@ -516,6 +528,8 @@ number_of_players_button.grid(row=1, column=0)
 list1 = ["\u2680", "\u2681", "\u2682", "\u2683", "\u2684", "\u2685"]
 
 rolls = []
+rounds = []
+# print(len(game.get_players_obj()))
 def dice_click():
     rand = random.choice(list1)
     Label(text=rand, font=('Helvetica 50')) .grid(row=6, column=15, rowspan=2, columnspan=2)
@@ -532,28 +546,60 @@ def dice_click():
     elif rand == "\u2685":
         rolls.append(6)
 
-    even_odd = 0
     if len(game.get_players_obj()) == 2:
-        rounds = []
         if len(rounds) == 0:
-            for roll in rolls:
-                rounds.append(tuple(['A', roll]))
-                if roll == 6:
-                    rounds.append(tuple(['A', roll]))
-        elif even_odd == 0:
-            for roll in rolls:
-                rounds.append(tuple(['A', roll]))
-                if roll == 6:
-                    rounds.append(tuple(['A', roll]))
-        elif even_odd != 0:
-            for roll in rolls:
-                rounds.append(tuple(['B', roll]))
-                if roll == 6:
-                    rounds.append(tuple(['B', roll]))
-        even_odd = len(rounds) % 2
+            rounds.append(tuple(['A', rolls[-1]]))
+        elif rounds[-1][1] == 6 and rounds[-1][0] == 'A':
+            rounds.append(tuple(['A', rolls[-1]]))
+        elif rounds[-1][1] == 6 and rounds[-1][0] == 'B':
+            rounds.append(tuple(['B', rolls[-1]]))
+        elif rounds[-1][0] == 'B':
+            rounds.append(tuple(['A', rolls[-1]]))
+        elif rounds[-1][0] == 'A':
+            rounds.append(tuple(['B', rolls[-1]]))
+
+        # AP
+        if rounds[0] == "H":
+            Label(text="P", bg="orange").grid(row=4, column=3)
+        elif rounds[0] == "R":
+            Label(text="P", bg="orange").grid(row=2, column=1)
+        elif 1 <= int(rounds[0]) >= 15:
+            Label(text="P", bg="orange").grid(row=0, column=rounds[0])
+        elif 16 <= int(rounds[0]) >= 29:
+            Label(text="P", bg="orange").grid(row=rounds[0]-15, column=14)
+        elif 16 <= int(rounds[0]) >= 29:
+            Label(text="P", bg="orange").grid(row=rounds[0]-15, column=14)
+
+        # AQ
+        if rounds[1] == 0:
+            Label(text="P", bg="orange").grid(row=4, column=3)
+        elif rounds[1] == 1:
+            Label(text="P", bg="orange").grid(row=2, column=1)
+
+
+            # Label(text="P", bg="blue").grid(row=4, column=10)
+            # Label(text="Q", bg="blue").grid(row=4, column=11)
+
         print(rounds)
-        print(len(rounds))
-        print(len(rounds)%2)
+        print(game.play_game(rounds[-1]))
+
+    elif len(game.get_players_obj()) == 3:
+        if len(rounds) == 0:
+            rounds.append(tuple(['A', rolls[-1]]))
+        elif rounds[-1][1] == 6 and rounds[-1][0] == 'A':
+            rounds.append(tuple(['A', rolls[-1]]))
+        elif rounds[-1][1] == 6 and rounds[-1][0] == 'B':
+            rounds.append(tuple(['B', rolls[-1]]))
+        elif rounds[-1][1] == 6 and rounds[-1][0] == 'C':
+            rounds.append(tuple(['C', rolls[-1]]))
+        elif rounds[-1][0] == 'A':
+            rounds.append(tuple(['B', rolls[-1]]))
+        elif rounds[-1][0] == 'B':
+            rounds.append(tuple(['C', rolls[-1]]))
+        elif rounds[-1][0] == 'C':
+            rounds.append(tuple(['A', rolls[-1]]))
+
+        print(rounds)
         print(game.play_game(rounds[-1]))
     else:
         print('Not working')
@@ -561,8 +607,8 @@ def dice_click():
 
 dice_button = Button(root, text="Roll", command=dice_click) .grid(row=8, column=15)
 
-# P token
-orange_p = Label(text="P", bg="orange") .grid(row=0, column=14)
+# # P token
+# orange_p = Label(text="P", bg="orange") .grid(row=0, column=14)
 
 
 
