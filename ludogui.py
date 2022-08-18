@@ -352,13 +352,13 @@ class LudoGame:
             elif player.get_token_p_step_count() == 0:
                 list_of_players_pos.append("R")
             else:
-                list_of_players_pos.append(str(player.get_position_on_board_p()))
+                list_of_players_pos.append(player.get_position_on_board_p())
             if player.get_token_q_step_count() == -1:
                 list_of_players_pos.append("H")
             elif player.get_token_q_step_count() == 0:
                 list_of_players_pos.append("R")
             else:
-                list_of_players_pos.append(str(player.get_position_on_board_q()))
+                list_of_players_pos.append(player.get_position_on_board_q())
         return list_of_players_pos
 
 #################################
@@ -376,7 +376,7 @@ for i in range(0, 15):
         sqr1 = Canvas(root, width=40, height=40, bg="#FFD580", highlightthickness=1, highlightbackground="black")
         sqr1.grid(row=0, column=i)
         sqr1.create_text(20, 20, text=i+1, font=('Helvetica 15'))
-    elif i == 7 or i==14:
+    elif i == 7 or i == 14:
         sqr8_15 = Canvas(root, width=40, height=40, bg="#ADD8E6", highlightthickness=1, highlightbackground="black")
         sqr8_15.grid(row=0, column=i)
         sqr8_15.create_text(20, 20, text=i+1, font=('Helvetica 15'))
@@ -450,7 +450,7 @@ for i in range(7, 51, 14):
         for j in range(1, 7):
             pink_sqr = Canvas(root, width=40, height=40, bg="#FFD580", highlightthickness=1, highlightbackground="black")
             pink_sqr.grid(row=7, column=j)
-            pink_sqr.create_text(20, 20, text="D" + str(j), font=('Helvetica 15'))
+            pink_sqr.create_text(20, 20, text="A" + str(j), font=('Helvetica 15'))
 
 # Ending square
 end_sqr = Canvas(root, width=40, height=40, bg="white", highlightthickness=1, highlightbackground="black")
@@ -506,13 +506,24 @@ window2.geometry("300x300")
 e = Entry(window2, width=10)
 e.grid(row=0, column=0)
 num = None
+
 def number_of_players():
     game.set_players((int(e.get())))
+    global apq
+    global ap
+    global aq
+    global bp
+    global bq
     if len(game.get_players_obj()) == 2:
-        Label(text="P", bg="orange").grid(row=4, column=3)
-        Label(text="Q", bg="orange").grid(row=4, column=4)
-        Label(text="P", bg="blue").grid(row=4, column=10)
-        Label(text="Q", bg="blue").grid(row=4, column=11)
+        apq = Label(root, text="P", bg="orange")
+        ap = Label(root, text="P", bg="orange")
+        ap .grid(row=4, column=3)
+        aq = Label(text="Q", bg="orange")
+        aq .grid(row=4, column=4)
+        bp = Label(text="P", bg="blue")
+        bp .grid(row=4, column=10)
+        bq = Label(text="Q", bg="blue")
+        bq .grid(row=4, column=11)
     if len(game.get_players_obj()) == 3:
         Label(text="P", bg="orange").grid(row=4, column=3)
         Label(text="Q", bg="orange").grid(row=4, column=4)
@@ -529,7 +540,7 @@ list1 = ["\u2680", "\u2681", "\u2682", "\u2683", "\u2684", "\u2685"]
 
 rolls = []
 rounds = []
-# print(len(game.get_players_obj()))
+
 def dice_click():
     rand = random.choice(list1)
     Label(text=rand, font=('Helvetica 50')) .grid(row=6, column=15, rowspan=2, columnspan=2)
@@ -558,30 +569,147 @@ def dice_click():
         elif rounds[-1][0] == 'A':
             rounds.append(tuple(['B', rolls[-1]]))
 
-        # AP
-        if rounds[0] == "H":
-            Label(text="P", bg="orange").grid(row=4, column=3)
-        elif rounds[0] == "R":
-            Label(text="P", bg="orange").grid(row=2, column=1)
-        elif 1 <= int(rounds[0]) >= 15:
-            Label(text="P", bg="orange").grid(row=0, column=rounds[0])
-        elif 16 <= int(rounds[0]) >= 29:
-            Label(text="P", bg="orange").grid(row=rounds[0]-15, column=14)
-        elif 16 <= int(rounds[0]) >= 29:
-            Label(text="P", bg="orange").grid(row=rounds[0]-15, column=14)
+        game_on = game.play_game(rounds[-1])
 
-        # AQ
-        if rounds[1] == 0:
-            Label(text="P", bg="orange").grid(row=4, column=3)
-        elif rounds[1] == 1:
-            Label(text="P", bg="orange").grid(row=2, column=1)
+        # If tokens are the same
+        if game_on[0] == game_on[1] and game_on[0] != "H" and game_on[0] != "R":
+            if 1 <= int(game_on[0]) <= 15:
+                apq .grid_forget()
+                ap. grid_forget()
+                aq. grid_forget()
+                apq .grid(row=0, column=int(game_on[0]) - 1)
+            elif 16 <= int(game_on[0]) <= 29:
+                apq .grid_forget()
+                ap. grid_forget()
+                aq. grid_forget()
+                apq .grid(row=int(game_on[0]) - 15, column=14)
+            elif 30 <= int(game_on[0]) <= 43:
+                apq .grid_forget()
+                ap. grid_forget()
+                aq. grid_forget()
+                apq .grid(row=14, column=43 - int(game_on[0]))
+            elif 44 <= int(game_on[0]) <= 50:
+                ap.place_forget()
+                aq.place_forget()
+                apq .grid(row=57 - int(game_on[0]), column=0)
+            elif int(game_on[0]) == "E":
+                apq .grid_forget()
+                ap. grid_forget()
+                aq. grid_forget()
+                apq .grid(row=7, column=7)
+                apq .grid_forget()
+                ap. grid_forget()
+                aq. grid_forget()
+                apq .grid(row=7, column=int(game_on[0][1]))
 
+        else:
+            # If tokens are separate
+            # AP
+            if game_on[0] == "H":
+                ap .grid_forget()
+                ap .grid(row=4, column=3)
+            elif game_on[0] == "R":
+                ap .grid_forget()
+                ap .grid(row=2, column=1)
+            elif 1 <= int(game_on[0]) <= 15:
+                ap .grid_forget()
+                ap .grid(row=0, column=int(game_on[0])-1)
+            elif 16 <= int(game_on[0]) <= 29:
+                ap .grid_forget()
+                ap .grid(row=int(game_on[0])-15, column=14)
+            elif 30 <= int(game_on[0]) <= 43:
+                ap .grid_forget()
+                ap .grid(row=14, column=43-int(game_on[0]))
+            elif 44 <= int(game_on[0]) <= 50:
+                ap .grid_forget()
+                ap .grid(row=57-int(game_on[0]), column=0)
+            elif int(game_on[0]) == "E":
+                ap .grid_forget()
+                ap .grid(row=7, column=7)
+            else:
+                ap .grid_forget()
+                ap .grid(row=7, column=int(game_on[0][1]))
 
-            # Label(text="P", bg="blue").grid(row=4, column=10)
-            # Label(text="Q", bg="blue").grid(row=4, column=11)
+            # AQ
+            if game_on[1] == "H":
+                aq .grid_forget()
+                aq .grid(row=4, column=4)
+            elif game_on[1] == "R":
+                aq .grid_forget()
+                aq .grid(row=2, column=2)
+            elif 1 <= int(game_on[1]) <= 15:
+                aq .grid_forget()
+                aq .grid(row=0, column=int(game_on[1])-1)
+            elif 16 <= int(game_on[1]) <= 29:
+                aq .grid_forget()
+                aq .grid(row=int(game_on[1])-15, column=14)
+            elif 30 <= int(game_on[1]) <= 43:
+                aq .grid_forget()
+                aq .grid(row=14, column=43-int(game_on[1]))
+            elif 44 <= int(game_on[1]) <= 50:
+                aq .grid_forget()
+                aq .grid(row=57-int(game_on[1]), column=0)
+            elif int(game_on[1]) == "E":
+                aq .grid_forget()
+                aq .grid(row=7, column=7)
+            else:
+                aq .grid_forget()
+                aq .grid(row=7, column=int(game_on[1][1]))
+
+        # BP
+        if game_on[2] == "H":
+            bp .grid_forget()
+            bp .grid(row=4, column=10)
+        elif game_on[2] == "R":
+            bp .grid_forget()
+            bp .grid(row=2, column=12)
+        elif 1 <= int(game_on[2]) <= 8:
+            bp .grid_forget()
+            bp .grid(row=0, column=int(game_on[2])-1)
+        elif 15 <= int(game_on[2]) <= 29:
+            bp .grid_forget()
+            bp .grid(row=int(game_on[2])-15, column=14)
+        elif 30 <= int(game_on[2]) <= 43:
+            bp .grid_forget()
+            bp .grid(row=14, column=43-int(game_on[2]))
+        elif 44 <= int(game_on[2]) <= 57:
+            bp .grid_forget()
+            bp .grid(row=57-int(game_on[2]), column=0)
+        elif int(game_on[2]) == "E":
+            bp .grid_forget()
+            bp .grid(row=7, column=7)
+        else:
+            bp .grid_forget()
+            bp .grid(row=int(game_on[2][1]), column=7)
+
+        #BQ
+        if game_on[3] == "H":
+            bq .grid_forget()
+            bq .grid(row=4, column=11)
+        elif game_on[3] == "R":
+            bq .grid_forget()
+            bq .grid(row=2, column=13)
+        elif 1 <= int(game_on[3]) <= 8:
+            bq .grid_forget()
+            bq .grid(row=0, column=int(game_on[3])-1)
+        elif 15 <= int(game_on[3]) <= 29:
+            bq .grid_forget()
+            bq .grid(row=int(game_on[3])-15, column=14)
+        elif 30 <= int(game_on[3]) <= 43:
+            bq .grid_forget()
+            bq .grid(row=14, column=43-int(game_on[3]))
+        elif 44 <= int(game_on[3]) <= 57:
+            bq .grid_forget()
+            bq .grid(row=57-int(game_on[3]), column=0)
+        elif int(game_on[3]) == "E":
+            bq .grid_forget()
+            bq .grid(row=7, column=7)
+        else:
+            bq .grid_forget()
+            bq .grid(row=int(game_on[3][1]), column=7)
 
         print(rounds)
-        print(game.play_game(rounds[-1]))
+        print(game_on)
 
     elif len(game.get_players_obj()) == 3:
         if len(rounds) == 0:
@@ -607,13 +735,10 @@ def dice_click():
 
 dice_button = Button(root, text="Roll", command=dice_click) .grid(row=8, column=15)
 
-# # P token
-# orange_p = Label(text="P", bg="orange") .grid(row=0, column=14)
 
 
 
 
-# print(game.get_players_obj())
 
 # dice_1_img = ImageTk.PhotoImage(Image.open('1bbg.PNG'))
 # dice_1_label = Label(image=dice_1_img) .grid(row=7, column=15)
