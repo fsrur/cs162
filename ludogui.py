@@ -512,14 +512,16 @@ def number_of_players():
     global apq
     global ap
     global aq
+    global bpq
     global bp
     global bq
     if len(game.get_players_obj()) == 2:
-        apq = Label(root, text="P", bg="orange")
+        apq = Label(root, text="PQ", bg="orange")
         ap = Label(root, text="P", bg="orange")
         ap .grid(row=4, column=3)
         aq = Label(text="Q", bg="orange")
         aq .grid(row=4, column=4)
+        bpq = Label(text="PQ", bg="blue")
         bp = Label(text="P", bg="blue")
         bp .grid(row=4, column=10)
         bq = Label(text="Q", bg="blue")
@@ -571,9 +573,22 @@ def dice_click():
 
         game_on = game.play_game(rounds[-1])
 
-        # If tokens are the same
+        ## Make game end on E
+        ## Figure out double rolls on every 6
+        ## 
+        # If AP and AQ tokens are the same
         if game_on[0] == game_on[1] and game_on[0] != "H" and game_on[0] != "R":
-            if 1 <= int(game_on[0]) <= 15:
+            if game_on[0] == "A1" or game_on[0] == "A2" or game_on[0] == "A3" or game_on[0] == "A4" or game_on[0] == "A5" or game_on[0] == "A6":
+                apq .grid_forget()
+                ap. grid_forget()
+                aq. grid_forget()
+                apq .grid(row=7, column=int(game_on[0][1]))
+            elif game_on[0] == "E":
+                apq .grid_forget()
+                ap. grid_forget()
+                aq. grid_forget()
+                apq .grid(row=7, column=7)
+            elif 1 <= int(game_on[0]) <= 15:
                 apq .grid_forget()
                 ap. grid_forget()
                 aq. grid_forget()
@@ -592,43 +607,42 @@ def dice_click():
                 ap.place_forget()
                 aq.place_forget()
                 apq .grid(row=57 - int(game_on[0]), column=0)
-            elif int(game_on[0]) == "E":
-                apq .grid_forget()
-                ap. grid_forget()
-                aq. grid_forget()
-                apq .grid(row=7, column=7)
-                apq .grid_forget()
-                ap. grid_forget()
-                aq. grid_forget()
-                apq .grid(row=7, column=int(game_on[0][1]))
 
         else:
             # If tokens are separate
             # AP
             if game_on[0] == "H":
                 ap .grid_forget()
+                apq .grid_forget()
                 ap .grid(row=4, column=3)
             elif game_on[0] == "R":
                 ap .grid_forget()
+                apq .grid_forget()
                 ap .grid(row=2, column=1)
+            elif game_on[0] == "A1" or game_on[0] == "A2" or game_on[0] == "A3" or game_on[0] == "A4" or game_on[0] == "A5" or game_on[0] == "A6":
+                ap .grid_forget()
+                apq .grid_forget()
+                ap .grid(row=7, column=int(game_on[0][1]))
+            elif game_on[0] == "E":
+                ap .grid_forget()
+                apq .grid_forget()
+                ap .grid(row=7, column=7)
             elif 1 <= int(game_on[0]) <= 15:
                 ap .grid_forget()
+                apq .grid_forget()
                 ap .grid(row=0, column=int(game_on[0])-1)
             elif 16 <= int(game_on[0]) <= 29:
                 ap .grid_forget()
+                apq .grid_forget()
                 ap .grid(row=int(game_on[0])-15, column=14)
             elif 30 <= int(game_on[0]) <= 43:
                 ap .grid_forget()
+                apq .grid_forget()
                 ap .grid(row=14, column=43-int(game_on[0]))
             elif 44 <= int(game_on[0]) <= 50:
                 ap .grid_forget()
+                apq .grid_forget()
                 ap .grid(row=57-int(game_on[0]), column=0)
-            elif int(game_on[0]) == "E":
-                ap .grid_forget()
-                ap .grid(row=7, column=7)
-            else:
-                ap .grid_forget()
-                ap .grid(row=7, column=int(game_on[0][1]))
 
             # AQ
             if game_on[1] == "H":
@@ -637,6 +651,12 @@ def dice_click():
             elif game_on[1] == "R":
                 aq .grid_forget()
                 aq .grid(row=2, column=2)
+            elif game_on[1] == "A1" or game_on[1] == "A2" or game_on[1] == "A3" or game_on[1] == "A4" or game_on[1] == "A5" or game_on[1] == "A6":
+                aq .grid_forget()
+                aq .grid(row=7, column=int(game_on[1][1]))
+            elif game_on[1] == "E":
+                aq .grid_forget()
+                aq .grid(row=7, column=7)
             elif 1 <= int(game_on[1]) <= 15:
                 aq .grid_forget()
                 aq .grid(row=0, column=int(game_on[1])-1)
@@ -649,64 +669,101 @@ def dice_click():
             elif 44 <= int(game_on[1]) <= 50:
                 aq .grid_forget()
                 aq .grid(row=57-int(game_on[1]), column=0)
-            elif int(game_on[1]) == "E":
-                aq .grid_forget()
-                aq .grid(row=7, column=7)
-            else:
-                aq .grid_forget()
-                aq .grid(row=7, column=int(game_on[1][1]))
 
-        # BP
-        if game_on[2] == "H":
-            bp .grid_forget()
-            bp .grid(row=4, column=10)
-        elif game_on[2] == "R":
-            bp .grid_forget()
-            bp .grid(row=2, column=12)
-        elif 1 <= int(game_on[2]) <= 8:
-            bp .grid_forget()
-            bp .grid(row=0, column=int(game_on[2])-1)
-        elif 15 <= int(game_on[2]) <= 29:
-            bp .grid_forget()
-            bp .grid(row=int(game_on[2])-15, column=14)
-        elif 30 <= int(game_on[2]) <= 43:
-            bp .grid_forget()
-            bp .grid(row=14, column=43-int(game_on[2]))
-        elif 44 <= int(game_on[2]) <= 57:
-            bp .grid_forget()
-            bp .grid(row=57-int(game_on[2]), column=0)
-        elif int(game_on[2]) == "E":
-            bp .grid_forget()
-            bp .grid(row=7, column=7)
-        else:
-            bp .grid_forget()
-            bp .grid(row=int(game_on[2][1]), column=7)
+        # If BP and BQ are together
+        if game_on[2] == game_on[3] and game_on[2] != "H" and game_on[2] != "R":
+            if game_on[2] == "B1" or game_on[2] == "B2" or game_on[2] == "B3" or game_on[2] == "B4" or game_on[2] == "B5" or game_on[2] == "B6":
+                bpq .grid_forget()
+                bp. grid_forget()
+                bq. grid_forget()
+                bpq.grid(row=int(game_on[2][1]), column=7)
+            elif game_on[2] == "E":
+                bpq .grid_forget()
+                bp. grid_forget()
+                bq. grid_forget()
+                bpq.grid(row=7, column=7)
+            elif 1 <= int(game_on[2]) <= 8:
+                bpq .grid_forget()
+                bp. grid_forget()
+                bq. grid_forget()
+                bpq.grid(row=0, column=int(game_on[2]) - 1)
+            elif 15 <= int(game_on[2]) <= 29:
+                bpq .grid_forget()
+                bp. grid_forget()
+                bq. grid_forget()
+                bpq.grid(row=int(game_on[2]) - 15, column=14)
+            elif 30 <= int(game_on[2]) <= 43:
+                bpq .grid_forget()
+                bp. grid_forget()
+                bq. grid_forget()
+                bpq.grid(row=14, column=43 - int(game_on[2]))
+            elif 44 <= int(game_on[2]) <= 57:
+                bpq .grid_forget()
+                bp. grid_forget()
+                bq. grid_forget()
+                bpq.grid(row=57 - int(game_on[2]), column=0)
 
-        #BQ
-        if game_on[3] == "H":
-            bq .grid_forget()
-            bq .grid(row=4, column=11)
-        elif game_on[3] == "R":
-            bq .grid_forget()
-            bq .grid(row=2, column=13)
-        elif 1 <= int(game_on[3]) <= 8:
-            bq .grid_forget()
-            bq .grid(row=0, column=int(game_on[3])-1)
-        elif 15 <= int(game_on[3]) <= 29:
-            bq .grid_forget()
-            bq .grid(row=int(game_on[3])-15, column=14)
-        elif 30 <= int(game_on[3]) <= 43:
-            bq .grid_forget()
-            bq .grid(row=14, column=43-int(game_on[3]))
-        elif 44 <= int(game_on[3]) <= 57:
-            bq .grid_forget()
-            bq .grid(row=57-int(game_on[3]), column=0)
-        elif int(game_on[3]) == "E":
-            bq .grid_forget()
-            bq .grid(row=7, column=7)
         else:
-            bq .grid_forget()
-            bq .grid(row=int(game_on[3][1]), column=7)
+            # If B tokes are separate
+            # BP
+            if game_on[2] == "H":
+                bp .grid_forget()
+                bpq .grid_forget()
+                bp .grid(row=4, column=10)
+            elif game_on[2] == "R":
+                bp .grid_forget()
+                bpq .grid_forget()
+                bp .grid(row=2, column=12)
+            elif game_on[2] == "B1" or game_on[2] == "B2" or game_on[2] == "B3" or game_on[2] == "B4" or game_on[2] == "B5" or game_on[2] == "B6":
+                bp .grid_forget()
+                bpq .grid_forget()
+                bp .grid(row=int(game_on[2][1]), column=7)
+            elif game_on[2] == "E":
+                bp .grid_forget()
+                bpq .grid_forget()
+                bp .grid(row=7, column=7)
+            elif 1 <= int(game_on[2]) <= 8:
+                bp .grid_forget()
+                bpq .grid_forget()
+                bp .grid(row=0, column=int(game_on[2])-1)
+            elif 15 <= int(game_on[2]) <= 29:
+                bp .grid_forget()
+                bpq .grid_forget()
+                bp .grid(row=int(game_on[2])-15, column=14)
+            elif 30 <= int(game_on[2]) <= 43:
+                bp .grid_forget()
+                bpq .grid_forget()
+                bp .grid(row=14, column=43-int(game_on[2]))
+            elif 44 <= int(game_on[2]) <= 57:
+                bp .grid_forget()
+                bpq .grid_forget()
+                bp .grid(row=57-int(game_on[2]), column=0)
+
+            #BQ
+            if game_on[3] == "H":
+                bq .grid_forget()
+                bq .grid(row=4, column=11)
+            elif game_on[3] == "R":
+                bq .grid_forget()
+                bq .grid(row=2, column=13)
+            elif game_on[3] == "B1" or game_on[3] == "B2" or game_on[3] == "B3" or game_on[3] == "B4" or game_on[3] == "B5" or game_on[3] == "B6":
+                bq .grid_forget()
+                bq .grid(row=int(game_on[3][1]), column=7)
+            elif game_on[3] == "E":
+                bq .grid_forget()
+                bq .grid(row=7, column=7)
+            elif 1 <= int(game_on[3]) <= 8:
+                bq .grid_forget()
+                bq .grid(row=0, column=int(game_on[3])-1)
+            elif 15 <= int(game_on[3]) <= 29:
+                bq .grid_forget()
+                bq .grid(row=int(game_on[3])-15, column=14)
+            elif 30 <= int(game_on[3]) <= 43:
+                bq .grid_forget()
+                bq .grid(row=14, column=43-int(game_on[3]))
+            elif 44 <= int(game_on[3]) <= 57:
+                bq .grid_forget()
+                bq .grid(row=57-int(game_on[3]), column=0)
 
         print(rounds)
         print(game_on)
