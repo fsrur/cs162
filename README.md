@@ -1,11 +1,11 @@
 # ludogui
-Development in progress. <br />
+<b> Development in progress. </b> <br />
 
-To do: <br />
+<b> To do: </b> <br />
 Finalize and improve GUI. <br />
 Expand the game's functionality to support three and four players. <br />
 
-Description: <br />
+<b> Description: </b> <br />
 Multiplayer interactive board game utilizing OOP concepts, where players move their tokens around a virtual game board. <br />
 
 Each player is allocated two tokens, labeled 'P' and 'Q', and their goal is to move these tokens from a starting position to an ending position on the game board. The journey from start to end is measured in steps, with each token keeping track of its own step count. <br />
