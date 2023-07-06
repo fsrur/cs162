@@ -1,17 +1,42 @@
 # ludogui
-<b> Development in progress. </b> <br />
 
-<b> To do: </b> <br />
-Finalize and improve GUI. <br />
-Expand the game's functionality to support three and four players. <br />
+## Development in progress
 
-<b> Description: </b> <br />
-Multiplayer interactive board game utilizing OOP concepts, where players move their tokens around a virtual game board. <br />
+## To do:
+Finalize and improve GUI. 
 
-Each player is allocated two tokens, labeled 'P' and 'Q', and their goal is to move these tokens from a starting position to an ending position on the game board. The journey from start to end is measured in steps, with each token keeping track of its own step count. <br />
+Expand the game's functionality to support three and four players. 
 
-The game allows for four different players, each designated by a letter: 'A', 'B', 'C', or 'D'. These letters represent a specific start and end point on the game board, and the number of steps required for a token to reach the end can vary depending on the player. <br />
+## Ludo Game Implementation in Python
+This repository contains an implementation of the Ludo game in Python. This implementation uses object-oriented principles to model the game's mechanics.
 
-The game also keeps track of each player's status, which can be "Not Started", "Playing", or "Finished". The game concludes when a player reaches the end point, at which point their status changes to "Finished", and they are declared the winner. <br />
+The main classes in this implementation are:
 
-The GUI aspect of the game uses Python's Tkinter library to represent the game board and its elements. Each token's position on the board is visually represented, allowing players to see their tokens' positions relative to the start and end points, as well as to the positions of the other players' tokens. The GUI also includes buttons or other interactive elements that allow the players to move their tokens, to view the current step counts, and to start or end the game.
+- <b>'Player'</b>: Represents each player participating in the game.
+- <b>'LudoGame'</b>: Manages the game's mechanics, including the movement of player tokens according to game rules.
+
+## Player Class
+
+Each <b>'Player'</b> object represents a player in the game. It has methods to get and set the player's status, token position, and other related attributes.
+
+See the <b>'player.py'</b> file for the class implementation.
+
+## LudoGame Class
+
+The <b>'LudoGame'</b> class manages the game's mechanics. It does not have any data members. Instead, it utilizes methods from the <b>'Player'</b> class to update the game state. It also has a method <b>'set_players'</b>, which sets the number of players in the game.
+
+In <b>'LudoGame'</b>, the <b>'play_game'</b> method takes a list of turns and a list of player selections as parameters. This method then moves each player's tokens according to the game rules and updates the token step count for each player.
+
+See the <b>'game.py'</b> file for the class implementation.
+
+## GUI
+In addition to the game logic implementation, this repository includes a graphical user interface (GUI) for the Ludo game, built with Python's Tkinter library. This makes the game more interactive and visually appealing.
+
+See the <b>'gui.py'</b> file for the gui implementation.
+
+## How to Run the Game
+You can start the game by running the gui script from the command line:
+
+`python gui.py`
+
+After starting the game, you can interact with the GUI to roll the dice and move your tokens around the board.
