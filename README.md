@@ -1,6 +1,6 @@
 # ludogui
 
-## Development in progress
+### Development in progress
 
 ## To do:
 Finalize and improve GUI. 
