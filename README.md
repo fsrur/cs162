@@ -10,10 +10,12 @@ Expand the game's functionality to support three and four players.
 ## Ludo Game Implementation in Python
 This repository contains an implementation of the Ludo game in Python. This implementation uses object-oriented principles to model the game's mechanics.
 
-The main classes in this implementation are:
+## How to Run the Game
+You can start the game by running the gui script from the command line:
 
-- <b>'Player'</b>: Represents each player participating in the game.
-- <b>'LudoGame'</b>: Manages the game's mechanics, including the movement of player tokens according to game rules.
+`python gui.py`
+
+After starting the game, you can interact with the GUI to roll the dice and move your tokens around the board.
 
 ## Player Class
 
@@ -33,10 +35,3 @@ See the <b>'game.py'</b> file for the class implementation.
 In addition to the game logic implementation, this repository includes a graphical user interface (GUI) for the Ludo game, built with Python's Tkinter library. This makes the game more interactive and visually appealing.
 
 See the <b>'gui.py'</b> file for the gui implementation.
-
-## How to Run the Game
-You can start the game by running the gui script from the command line:
-
-`python gui.py`
-
-After starting the game, you can interact with the GUI to roll the dice and move your tokens around the board.
