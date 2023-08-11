@@ -1,7 +1,7 @@
-# Ludogui
+# Board Game
 
 ## Introduction
-"Ludogui" is a work-in-progress implementation of the Ludo game in Python, using object-oriented principles to model the game's mechanics. The game also includes a graphical user interface (GUI), making it interactive and visually appealing.
+A work-in-progress implementation of the Ludo board game in Python, using object-oriented principles to model the game's mechanics. The game also includes a graphical user interface (GUI), making it interactive and visually appealing.
 
 ### Development in progress
 
